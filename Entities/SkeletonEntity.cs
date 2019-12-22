@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hammerhand.Entities
 {
-    class BipedalEntity
+    public class BipedalEntity
     {
     }
 }

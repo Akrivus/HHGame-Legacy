@@ -21,6 +21,7 @@ namespace Hammerhand.Client
         private ConcurrentQueue<QueuedEntity> ForegroundItems = new ConcurrentQueue<QueuedEntity>();
         private ConcurrentQueue<QueuedEntity> ConcurrentQueue = new ConcurrentQueue<QueuedEntity>();
         private Clock FrameClock = new Clock();
+        public bool ShowHitboxes = false;
         public Game Game;
         public GameWindow(Game game) : base(game.Options.FullscreenEnabled? VideoMode.FullscreenModes[0] : new VideoMode(game.Options.Width, game.Options.Height), Game.Title, game.Options.FullscreenEnabled? Styles.Fullscreen : Styles.Default)
         {
@@ -146,6 +147,9 @@ namespace Hammerhand.Client
         {
             switch (e.Code)
             {
+                case Keyboard.Key.F10:
+                    ShowHitboxes = !ShowHitboxes;
+                    break;
                 case Keyboard.Key.F11:
                     Game.Options.FullscreenEnabled = !Game.Options.FullscreenEnabled;
                     Game.OpenWindow();

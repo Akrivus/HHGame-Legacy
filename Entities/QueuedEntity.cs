@@ -17,7 +17,7 @@ namespace Hammerhand.Entities
         protected Sprite Sprite;
         protected Game Game;
         public bool AlwaysVisible = false;
-        public FloatRect Bounds = GameWindow.FOV;
+        public FloatRect Bounds = Game.EmptyHitbox;
         public float Rotation = 0;
         public float Health = 1;
         public bool IsAlive
@@ -78,8 +78,13 @@ namespace Hammerhand.Entities
         protected virtual void OnDraw(GameWindow window, GameWindow.Priority priority) { }
         public void OnQueue(GameWindow window, GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue)
         {
+            
             if (IsAlive)
             {
+                if (window.ShowHitboxes)
+                {
+                    window.Draw(GetHitbox());
+                }
                 OnUpdate(priority, queue);
                 OnDraw(window, priority);
                 queue.Enqueue(this);
@@ -90,7 +95,7 @@ namespace Hammerhand.Entities
                 OnDequeue(window, priority, queue);
             }
         }
-        public RectangleShape GetRectangle()
+        public RectangleShape GetHitbox()
         {
             _rect.Origin = new Vector2f(Bounds.Width / 2, Bounds.Height / 2);
             _rect.Size = new Vector2f(Bounds.Width, Bounds.Height);

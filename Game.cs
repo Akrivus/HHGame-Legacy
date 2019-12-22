@@ -64,6 +64,7 @@ namespace Hammerhand
         public const string Title = "Hammerhand: The Game";
         public const float Gravity = 1.0F;
         public const float Friction = 0.9F;
+        public static readonly FloatRect EmptyHitbox = new FloatRect(0, 0, 0, 0);
         public static Game Instance;
         public static void Main(string[] args)
         {

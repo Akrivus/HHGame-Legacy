@@ -21,7 +21,6 @@ namespace Hammerhand.Entities.Items
             Sprite.Color = Game.Stage.Color;
             Sprite.Position = Position;
             Sprite.Rotation = Rotation;
-            window.Draw(GetRectangle());
             window.Draw(Sprite);
         }
     }
