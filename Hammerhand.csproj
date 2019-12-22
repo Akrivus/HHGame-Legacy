@@ -43,6 +43,7 @@
     <None Remove="Assets\Image\Characters\Sarah.1.png" />
     <None Remove="Assets\Image\Characters\Sarah.2.png" />
     <None Remove="Assets\Image\Characters\Sarah.3.png" />
+    <None Remove="Assets\Image\Characters\Shepherd.1.png" />
     <None Remove="Assets\Image\Characters\Tim.0.png" />
     <None Remove="Assets\Image\Icon.png" />
     <None Remove="Assets\Image\Items\Cup.png" />
@@ -59,6 +60,10 @@
     <None Remove="Assets\Image\World\Lights.png" />
     <None Remove="Assets\Image\World\Mainground.png" />
     <None Remove="Assets\Image\World\Television.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Image\Characters\Shepherd.1.png" />
   </ItemGroup>
 
   <ItemGroup>

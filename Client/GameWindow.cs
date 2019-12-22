@@ -160,22 +160,13 @@ namespace Hammerhand.Client
         {
             // throw new NotImplementedException();
         }
-        public bool _mouseDown = false;
-        public Cup _cup = null;
         private void OnMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            _mouseDown = true;
-            if (_cup == null)
-            {
-                _cup = new Cup(Game);
-                _cup.Position = MapPixelToCoords(new Vector2i(e.X, e.Y));
-                Watch(Priority.Mainground, _cup);
-            }
+            
         }
         private void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            _mouseDown = false;
-            _cup = null;
+            
         }
         private void OnMouseEntered(object sender, EventArgs e)
         {
@@ -187,11 +178,7 @@ namespace Hammerhand.Client
         }
         private void OnMouseMoved(object sender, MouseMoveEventArgs e)
         {
-            if (_mouseDown && _cup != null)
-            {
-                Vector2f mouse = MapPixelToCoords(new Vector2i(e.X, e.Y));
-                _cup.Velocity = new Vector2f(mouse.X - _cup.Position.X, mouse.Y - _cup.Position.Y);
-            }
+            
         }
         private void OnMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
