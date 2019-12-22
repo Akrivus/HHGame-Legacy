@@ -3,11 +3,124 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Image\Characters\Alex.0.png" />
+    <None Remove="Assets\Image\Characters\Alex.1.png" />
+    <None Remove="Assets\Image\Characters\Alex.2.png" />
+    <None Remove="Assets\Image\Characters\Alex.3.png" />
+    <None Remove="Assets\Image\Characters\Isaiah.0.png" />
+    <None Remove="Assets\Image\Characters\Isaiah.1.png" />
+    <None Remove="Assets\Image\Characters\Isaiah.2.png" />
+    <None Remove="Assets\Image\Characters\Isaiah.3.png" />
+    <None Remove="Assets\Image\Characters\Jordan.0.png" />
+    <None Remove="Assets\Image\Characters\Jordan.1.png" />
+    <None Remove="Assets\Image\Characters\Jordan.2.png" />
+    <None Remove="Assets\Image\Characters\Jordan.3.png" />
+    <None Remove="Assets\Image\Characters\Katie.0.png" />
+    <None Remove="Assets\Image\Characters\Katie.1.png" />
+    <None Remove="Assets\Image\Characters\Katie.2.png" />
+    <None Remove="Assets\Image\Characters\Katie.3.png" />
+    <None Remove="Assets\Image\Characters\Kayla.0.png" />
+    <None Remove="Assets\Image\Characters\Kayla.1.png" />
+    <None Remove="Assets\Image\Characters\Kayla.2.png" />
+    <None Remove="Assets\Image\Characters\Kayla.3.png" />
+    <None Remove="Assets\Image\Characters\Lucas.0.png" />
+    <None Remove="Assets\Image\Characters\Lucas.1.png" />
+    <None Remove="Assets\Image\Characters\Lucas.2.png" />
+    <None Remove="Assets\Image\Characters\Lucas.3.png" />
+    <None Remove="Assets\Image\Characters\Owen.0.png" />
+    <None Remove="Assets\Image\Characters\Owen.1.png" />
+    <None Remove="Assets\Image\Characters\Owen.2.png" />
+    <None Remove="Assets\Image\Characters\Owen.3.png" />
+    <None Remove="Assets\Image\Characters\Riley.0.png" />
+    <None Remove="Assets\Image\Characters\Riley.1.png" />
+    <None Remove="Assets\Image\Characters\Riley.2.png" />
+    <None Remove="Assets\Image\Characters\Riley.3.png" />
+    <None Remove="Assets\Image\Characters\Sarah.0.png" />
+    <None Remove="Assets\Image\Characters\Sarah.1.png" />
+    <None Remove="Assets\Image\Characters\Sarah.2.png" />
+    <None Remove="Assets\Image\Characters\Sarah.3.png" />
+    <None Remove="Assets\Image\Characters\Tim.0.png" />
+    <None Remove="Assets\Image\Icon.png" />
+    <None Remove="Assets\Image\Items\Cup.png" />
+    <None Remove="Assets\Image\World\0.png" />
+    <None Remove="Assets\Image\World\1.png" />
+    <None Remove="Assets\Image\World\2.png" />
+    <None Remove="Assets\Image\World\3.png" />
+    <None Remove="Assets\Image\World\4.png" />
+    <None Remove="Assets\Image\World\5.png" />
+    <None Remove="Assets\Image\World\6.png" />
+    <None Remove="Assets\Image\World\7.png" />
+    <None Remove="Assets\Image\World\Background.png" />
+    <None Remove="Assets\Image\World\Foreground.png" />
+    <None Remove="Assets\Image\World\Lights.png" />
+    <None Remove="Assets\Image\World\Mainground.png" />
+    <None Remove="Assets\Image\World\Television.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="SFML.Net" Version="2.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Image\Characters\Alex.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Alex.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Alex.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Alex.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Isaiah.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Isaiah.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Isaiah.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Isaiah.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Jordan.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Jordan.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Jordan.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Jordan.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Katie.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Katie.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Katie.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Katie.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Kayla.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Kayla.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Kayla.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Kayla.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Lucas.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Lucas.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Lucas.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Lucas.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Owen.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Owen.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Owen.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Owen.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Riley.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Riley.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Riley.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Riley.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Sarah.0.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Sarah.1.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Sarah.2.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Sarah.3.png" />
+    <EmbeddedResource Include="Assets\Image\Characters\Tim.0.png" />
+    <EmbeddedResource Include="Assets\Image\Icon.png" />
+    <EmbeddedResource Include="Assets\Image\Items\Cup.png" />
+    <EmbeddedResource Include="Assets\Image\World\Foreground.png" />
+    <EmbeddedResource Include="Assets\Image\World\Lights.png" />
+    <EmbeddedResource Include="Assets\Image\World\Television.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Image\World\Background.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Image\World\Mainground.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logic\" />
   </ItemGroup>
 
 </Project>
