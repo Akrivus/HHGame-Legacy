@@ -1,4 +1,5 @@
 ﻿using Hammerhand.Client;
+using SFML.Audio;
 using SFML.Graphics;
 using System;
 using System.Collections.Concurrent;
@@ -13,6 +14,7 @@ namespace Hammerhand.Entities.World
         private Sprite Mainground;
         private Sprite Foreground;
         private Sprite Television;
+        private Music Ambience;
         public Lights Lights;
         public Stage(Game _game) : base(_game)
         {
@@ -20,6 +22,8 @@ namespace Hammerhand.Entities.World
             Mainground = new Sprite(Game.Assets.GrabImage("World.Mainground"));
             Foreground = new Sprite(Game.Assets.GrabImage("World.Foreground"));
             Television = new Sprite(Game.Assets.GrabImage("World.Television"));
+            Ambience = Game.Assets.GrabMusic("Ambience");
+            Ambience.Play();
             Lights = new Lights(Game);
             AlwaysVisible = true;
         }

@@ -2,6 +2,7 @@
 using SFML.Graphics;
 using SFML.System;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,6 +16,7 @@ namespace Hammerhand.Entities
         public const int HeadHeight = 13;
         public int TorsoHeight;
         public Vector2f Facing;
+        public bool Walking = true;
         protected float RightArmRotation;
         protected float LeftArmRotation;
         protected float HeadRotation;
@@ -26,6 +28,7 @@ namespace Hammerhand.Entities
         protected Sprite Torso;
         protected Sprite LeftLeg;
         protected Sprite LeftArm;
+        private bool LeftLeading;
         public SkeletonEntity(Texture texture, Game _game, int torsoHeight) : base(_game)
         {
             TorsoHeight = torsoHeight;
@@ -44,11 +47,57 @@ namespace Hammerhand.Entities
             LeftArm.Origin = new Vector2f(4, 0);
             CanBounce = true;
         }
+        protected override void OnUpdate(GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue)
+        {
+            base.OnUpdate(priority, queue);
+            if (Walking)
+            {
+                Accelerate(GetScaleFromFace() * GetWalkingSpeed(), 0);
+                RightArmRotation = -RightLegRotation;
+                LeftArmRotation = -LeftLegRotation;
+                if (LeftLeading)
+                {
+                    RightLegRotation -= Game.FrameDelta;
+                    LeftLegRotation = -RightLegRotation;
+                    if (RightLegRotation < -15)
+                    {
+                        LeftLeading = false;
+                    }
+                }
+                else
+                {
+                    RightLegRotation += Game.FrameDelta;
+                    LeftLegRotation = -RightLegRotation;
+                    if (RightLegRotation > 15)
+                    {
+                        LeftLeading = true;
+                    }
+                }
+            }
+            else
+            {
+                if (RightLegRotation > 1)
+                {
+                    RightLegRotation -= Game.FrameDelta;
+                }
+                if (RightLegRotation < 1)
+                {
+                    RightLegRotation += Game.FrameDelta;
+                }
+                if (LeftLegRotation > 1)
+                {
+                    LeftLegRotation -= Game.FrameDelta;
+                }
+                if (LeftLegRotation < 1)
+                {
+                    LeftLegRotation += Game.FrameDelta;
+                }
+            }
+        }
         protected override void OnDraw(GameWindow window, GameWindow.Priority priority)
         {
             RightArm.Position = new Vector2f(Position.X + 2, Position.Y - CeliacPoint + HeightOffset + 2);
             RightArm.Rotation = RightArmRotation;
-            window.Draw(RightArm);
             RightLeg.Position = new Vector2f(Position.X + 1, Position.Y + CeliacPoint + HeightOffset);
             RightLeg.Rotation = RightLegRotation;
             if (RightLeg.Rotation != 0)
@@ -63,7 +112,6 @@ namespace Hammerhand.Entities
             {
                 RightLeg.Position = new Vector2f(Position.X + 1, Position.Y + CeliacPoint + HeightOffset);
             }
-            window.Draw(RightLeg);
             Head.Position = new Vector2f(Position.X - 1, Position.Y - CeliacPoint + HeightOffset + 1);
             Head.Rotation = HeadRotation;
             Head.Scale = new Vector2f(GetScaleFromFace(), 1.0F);
@@ -71,9 +119,7 @@ namespace Hammerhand.Entities
             {
                 Head.Position = new Vector2f(Position.X, Position.Y - CeliacPoint + HeightOffset + 1);
             }
-            window.Draw(Head);
             Torso.Position = new Vector2f(Position.X, Position.Y + 1 + HeightOffset);
-            window.Draw(Torso);
             LeftLeg.Position = new Vector2f(Position.X - 3, Position.Y + CeliacPoint + HeightOffset);
             LeftLeg.Rotation = LeftLegRotation;
             if (LeftLeg.Rotation != 0)
@@ -84,10 +130,34 @@ namespace Hammerhand.Entities
                     LeftLeg.Position = new Vector2f(Position.X - 3, Position.Y + CeliacPoint + HeightOffset);
                 }
             }
-            window.Draw(LeftLeg);
             LeftArm.Position = new Vector2f(Position.X - 4, Position.Y - CeliacPoint + HeightOffset + 2);
             LeftArm.Rotation = LeftArmRotation;
-            window.Draw(LeftArm);
+            if (GetScaleFromFace() > 0)
+            {
+                window.Draw(RightArm);
+                window.Draw(RightLeg);
+            }
+            else
+            {
+                window.Draw(LeftLeg);
+                window.Draw(LeftArm);
+            }
+            window.Draw(Head);
+            window.Draw(Torso);
+            if (GetScaleFromFace() > 0)
+            {
+                window.Draw(LeftArm);
+                window.Draw(LeftLeg);
+            }
+            else
+            {
+                window.Draw(RightLeg);
+                window.Draw(RightArm);
+            }
+        }
+        protected virtual float GetWalkingSpeed()
+        {
+            return 0.03F;
         }
         private float GetScaleFromFace()
         {
@@ -100,6 +170,5 @@ namespace Hammerhand.Entities
                 return 1.0F;
             }
         }
-
     }
 }

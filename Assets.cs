@@ -13,23 +13,31 @@ namespace Hammerhand
         private ConcurrentDictionary<string, Texture> _images = new ConcurrentDictionary<string, Texture>();
         private ConcurrentDictionary<string, Music> _musics = new ConcurrentDictionary<string, Music>();
         private Assembly _assembly = Assembly.GetExecutingAssembly();
+        public Font Font;
         public Assets()
         {
             foreach (string name in _assembly.GetManifestResourceNames()) {
-                string path = name.Substring(24, name.Length - (24 + 4));
-                string type = name.Substring(0, 23);
-                Stream stream = GetStream(name);
-                switch (type)
+                if (name.Equals("Hammerhand.Assets.Font.ttf"))
                 {
-                    case "Hammerhand.Assets.Sound":
-                        _sounds.TryAdd(path, new Sound(new SoundBuffer(stream)));
-                        break;
-                    case "Hammerhand.Assets.Image":
-                        _images.TryAdd(path, new Texture(new Image(stream)));
-                        break;
-                    case "Hammerhand.Assets.Music":
-                        _musics.TryAdd(path, new Music(stream));
-                        break;
+                    Font = new Font(GetStream(name));
+                }
+                else
+                {
+                    string path = name.Substring(24, name.Length - (24 + 4));
+                    string type = name.Substring(0, 23);
+                    Stream stream = GetStream(name);
+                    switch (type)
+                    {
+                        case "Hammerhand.Assets.Sound":
+                            _sounds.TryAdd(path, new Sound(new SoundBuffer(stream)));
+                            break;
+                        case "Hammerhand.Assets.Image":
+                            _images.TryAdd(path, new Texture(new Image(stream)));
+                            break;
+                        case "Hammerhand.Assets.Music":
+                            _musics.TryAdd(path, new Music(stream));
+                            break;
+                    }
                 }
             }
         }

@@ -45,8 +45,9 @@ namespace Hammerhand.Entities
                 }
                 else
                 {
-                    byte value = (byte)(255 - Game.Time % 240 / 240 * 255);
-                    return new Color(value, value, value);
+                    byte value = (byte)(255 - Game.Time % Game.LevelLength / Game.LevelLength * 64);
+                    byte blue = (byte) Math.Min(255, value / 191.0F * 255);
+                    return new Color(value, value, blue);
                 }
             }
             set { _color = value; }

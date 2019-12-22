@@ -1,6 +1,7 @@
 ﻿using Hammerhand.Data;
 using Hammerhand.Entities;
 using Hammerhand.Entities.Items;
+using Hammerhand.Entities.Player;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -111,6 +112,12 @@ namespace Hammerhand.Client
             FrameClock.Restart();
             base.Display();
         }
+        public void DrawText(Text text, bool centered = false)
+        {
+            text.Origin = new Vector2f(centered? text.GetLocalBounds().Width / 2 : 0, text.GetLocalBounds().Height / 2);
+            text.Scale = new Vector2f(0.1F, 0.1F);
+            Draw(text);
+        }
         private void OnClosed(object sender, EventArgs e)
         {
             Close();
@@ -121,11 +128,11 @@ namespace Hammerhand.Client
         }
         private void OnJoystickButtonPressed(object sender, JoystickButtonEventArgs e)
         {
-            // throw new NotImplementedException();
+            Console.WriteLine("{0} PRESSED {1}", e.JoystickId, e.Button);
         }
         private void OnJoystickButtonReleased(object sender, JoystickButtonEventArgs e)
         {
-            // throw new NotImplementedException();
+            Console.WriteLine("{0} RELEASED {1}", e.JoystickId, e.Button);
         }
         private void OnJoystickConnected(object sender, JoystickConnectEventArgs e)
         {
@@ -137,7 +144,7 @@ namespace Hammerhand.Client
         }
         private void OnJoystickMoved(object sender, JoystickMoveEventArgs e)
         {
-            // throw new NotImplementedException();
+            Console.WriteLine("{0} MOVED {1} to {2}", e.JoystickId, e.Axis, e.Position);
         }
         private void OnKeyPressed(object sender, KeyEventArgs e)
         {
@@ -166,7 +173,9 @@ namespace Hammerhand.Client
         }
         private void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            
+            SkeletonEntity entity = new SkeletonEntity(Game.Assets.GrabImage("Characters.Jordan.Winter"), Game, 17);
+            entity.Position = MapPixelToCoords(new Vector2i(e.X, e.Y));
+            Watch(Priority.Mainground, entity);
         }
         private void OnMouseEntered(object sender, EventArgs e)
         {
