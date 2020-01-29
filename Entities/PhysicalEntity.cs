@@ -1,4 +1,4 @@
-﻿using Hammerhand.Client;
+﻿using HHGame.Client;
 using SFML.Graphics;
 using SFML.System;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hammerhand.Entities
+namespace HHGame.Entities
 {
     public class PhysicalEntity : QueuedEntity
     {

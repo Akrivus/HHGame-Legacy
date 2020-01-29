@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hammerhand.Entities.Player
+namespace HHGame.Entities.Player
 {
     public class Player : Barista
     {

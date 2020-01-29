@@ -1,7 +1,7 @@
-﻿using Hammerhand.Client;
-using Hammerhand.Data;
-using Hammerhand.Entities;
-using Hammerhand.Entities.World;
+﻿using HHGame.Client;
+using HHGame.Data;
+using HHGame.Entities;
+using HHGame.Entities.World;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hammerhand
+namespace HHGame
 {
     public class Game
     {
@@ -85,7 +85,7 @@ namespace Hammerhand
             }
             return position.Y < 192;
         }
-        public const string Title = "Hammerhand: The Game";
+        public const string Title = "HHGame: The Game";
         public const float LevelLength = 24;
         public const float Gravity = 1.0F;
         public const float Friction = 0.9F;

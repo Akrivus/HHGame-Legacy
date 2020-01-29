@@ -1,7 +1,7 @@
-﻿using Hammerhand.Data;
-using Hammerhand.Entities;
-using Hammerhand.Entities.Items;
-using Hammerhand.Entities.Player;
+﻿using HHGame.Data;
+using HHGame.Entities;
+using HHGame.Entities.Items;
+using HHGame.Entities.Player;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -9,7 +9,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace Hammerhand.Client
+namespace HHGame.Client
 {
     public class GameWindow : RenderWindow
     {

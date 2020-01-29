@@ -1,11 +1,11 @@
-﻿using Hammerhand.Client;
+﻿using HHGame.Client;
 using SFML.Graphics;
 using SFML.System;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hammerhand.Entities.Items
+namespace HHGame.Entities.Items
 {
     public class Cup : PhysicalEntity
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hammerhand.Data
+namespace HHGame.Data
 {
     public class Options
     {

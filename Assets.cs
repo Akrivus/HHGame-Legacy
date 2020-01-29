@@ -5,10 +5,11 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 
-namespace Hammerhand
+namespace HHGame
 {
     public class Assets
     {
+        private static int SI = "HHGame.Assets.Asset.".Length;
         private ConcurrentDictionary<string, Sound> _sounds = new ConcurrentDictionary<string, Sound>();
         private ConcurrentDictionary<string, Texture> _images = new ConcurrentDictionary<string, Texture>();
         private ConcurrentDictionary<string, Music> _musics = new ConcurrentDictionary<string, Music>();
@@ -17,24 +18,24 @@ namespace Hammerhand
         public Assets()
         {
             foreach (string name in _assembly.GetManifestResourceNames()) {
-                if (name.Equals("Hammerhand.Assets.Font.ttf"))
+                if (name.Equals("HHGame.Assets.Font.ttf"))
                 {
                     Font = new Font(GetStream(name));
                 }
                 else
                 {
-                    string path = name.Substring(24, name.Length - (24 + 4));
-                    string type = name.Substring(0, 23);
+                    string path = name.Substring(SI, name.Length - (SI + 4));
+                    string type = name.Substring(0, SI - 1);
                     Stream stream = GetStream(name);
                     switch (type)
                     {
-                        case "Hammerhand.Assets.Sound":
+                        case "HHGame.Assets.Sound":
                             _sounds.TryAdd(path, new Sound(new SoundBuffer(stream)));
                             break;
-                        case "Hammerhand.Assets.Image":
+                        case "HHGame.Assets.Image":
                             _images.TryAdd(path, new Texture(new Image(stream)));
                             break;
-                        case "Hammerhand.Assets.Music":
+                        case "HHGame.Assets.Music":
                             _musics.TryAdd(path, new Music(stream));
                             break;
                     }

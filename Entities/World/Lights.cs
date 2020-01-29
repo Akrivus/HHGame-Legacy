@@ -1,11 +1,11 @@
-﻿using Hammerhand.Client;
+﻿using HHGame.Client;
 using SFML.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hammerhand.Entities.World
+namespace HHGame.Entities.World
 {
     public class Lights : QueuedEntity
     {
