@@ -17,7 +17,7 @@ namespace HHGame
 {
     public class Game
     {
-        public const string Title = "HHGame: The Game";
+        public const string Title = "Hammerhand: The Game";
         public const float LevelLength = 240;
         public const float Gravity = 1.0F;
         public const float Friction = 0.9F;
