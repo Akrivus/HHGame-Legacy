@@ -9,7 +9,6 @@ namespace HHGame
 {
     public class Assets
     {
-        private static int SI = "HHGame.Assets.Asset.".Length;
         private ConcurrentDictionary<string, Sound> _sounds = new ConcurrentDictionary<string, Sound>();
         private ConcurrentDictionary<string, Texture> _images = new ConcurrentDictionary<string, Texture>();
         private ConcurrentDictionary<string, Music> _musics = new ConcurrentDictionary<string, Music>();
@@ -24,8 +23,8 @@ namespace HHGame
                 }
                 else
                 {
-                    string path = name.Substring(SI, name.Length - (SI + 4));
-                    string type = name.Substring(0, SI - 1);
+                    string path = name.Substring(20, name.Length - (20 + 4));
+                    string type = name.Substring(0, 19);
                     Stream stream = GetStream(name);
                     switch (type)
                     {

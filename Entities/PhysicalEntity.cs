@@ -17,8 +17,8 @@ namespace HHGame.Entities
         {
             Velocity = new Vector2f(_x, _y);
         }
-        protected virtual void OnLiving(GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
-        protected override void OnUpdate(GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue)
+        protected virtual void OnLiving(Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
+        protected override void OnUpdate(Priority priority, ConcurrentQueue<QueuedEntity> queue)
         {
             Position = new Vector2f(Position.X + Velocity.X, Position.Y + Velocity.Y);
             Velocity = new Vector2f(Velocity.X * Game.Friction, Velocity.Y * Game.Friction);

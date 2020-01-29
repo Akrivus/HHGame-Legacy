@@ -1,28 +1,38 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using HHGame.Client;
+using HHGame.Data;
+using SFML.Graphics;
+using SFML.System;
 
 namespace HHGame.Entities.Player
 {
     public class Barista : SkeletonEntity
     {
-        public enum Names { Alex, Isaiah, Jordan, Katie, Kayla, Lucas, Riley, Sarah }
-        public Names Name;
-        public Barista(Names name, Game _game) : base(_game.Assets.GrabImage(string.Format("Characters.{0}.{1}", name, _game.Season)), _game, HeightOf(name))
+        public enum Stations { PourOver, Register, Espresso }
+        public Stations Station = Stations.Register;
+        public Character Character;
+        public bool LockedInStation;
+        public Barista(Character character, Game _game) : base(_game.Assets.GrabImage(string.Format("Characters.{0}.{1}", character, _game.Season)), _game, character.GetHeight())
         {
-            Name = name;
+            Character = character;
         }
-        public static int HeightOf(Names name)
+        protected override void OnUpdate(Priority priority, ConcurrentQueue<QueuedEntity> queue)
         {
-            switch (name)
+            base.OnUpdate(priority, queue);
+            switch (Station)
             {
-                case Names.Katie:
-                    return 15;
-                case Names.Isaiah:
-                case Names.Lucas:
-                    return 19;
-                default:
-                    return 17;
+                case Stations.PourOver:
+                    Velocity = new Vector2f((192 - Position.X) * GetWalkingSpeed() * Game.FrameDelta, Velocity.Y);
+                    break;
+                case Stations.Register:
+                    Velocity = new Vector2f((208 - Position.X) * GetWalkingSpeed() * Game.FrameDelta, Velocity.Y);
+                    break;
+                case Stations.Espresso:
+                    Velocity = new Vector2f((232 - Position.X) * GetWalkingSpeed() * Game.FrameDelta, Velocity.Y);
+                    break;
             }
         }
     }

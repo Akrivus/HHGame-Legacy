@@ -14,7 +14,6 @@ namespace HHGame.Entities.World
         private Sprite Mainground;
         private Sprite Foreground;
         private Sprite Television;
-        private Music Ambience;
         public Lights Lights;
         public Stage(Game _game) : base(_game)
         {
@@ -22,26 +21,21 @@ namespace HHGame.Entities.World
             Mainground = new Sprite(Game.Assets.GrabImage("World.Mainground"));
             Foreground = new Sprite(Game.Assets.GrabImage("World.Foreground"));
             Television = new Sprite(Game.Assets.GrabImage("World.Television"));
-            Ambience = Game.Assets.GrabMusic("Ambience");
-            Ambience.Play();
             Lights = new Lights(Game);
             AlwaysVisible = true;
         }
-        protected override void OnDraw(GameWindow window, GameWindow.Priority priority)
+        protected override void OnDraw(GameWindow window, Priority priority)
         {
             switch (priority)
             {
-                case GameWindow.Priority.Background:
-                    Background.Color = Color;
+                case Priority.Background:
                     window.Draw(Background);
                     break;
-                case GameWindow.Priority.Mainground:
-                    Mainground.Color = Color;
-                    window.Draw(Mainground);
+                case Priority.Mainground:
+                    //window.Draw(Mainground);
                     window.Draw(Television);
                     break;
-                case GameWindow.Priority.Foreground:
-                    Foreground.Color = Color;
+                case Priority.Foreground:
                     window.Draw(Foreground);
                     break;
             }

@@ -10,16 +10,14 @@ namespace HHGame.Entities
 {
     public class QueuedEntity
     {
-        private RectangleShape _rect = new RectangleShape();
-        private Color _color = Color.Transparent;
-        private bool _alive = true;
+        public bool AlwaysVisible = false;
+        public FloatRect Bounds = new FloatRect(0, 0, 0, 0);
+        public float Rotation = 0;
+        public float Health = 1;
         protected bool IgnoresAmbientLight = false;
         protected Sprite Sprite;
         protected Game Game;
-        public bool AlwaysVisible = false;
-        public FloatRect Bounds = Game.EmptyHitbox;
-        public float Rotation = 0;
-        public float Health = 1;
+        private bool _alive = true;
         public bool IsAlive
         {
             get
@@ -34,23 +32,6 @@ namespace HHGame.Entities
                 }
             }
             set { _alive = value; }
-        }
-        public Color Color
-        {
-            get
-            {
-                if (IgnoresAmbientLight || !_color.Equals(Color.Transparent))
-                {
-                    return _color;
-                }
-                else
-                {
-                    byte value = (byte)(255 - Game.Time % Game.LevelLength / Game.LevelLength * 64);
-                    byte blue = (byte) Math.Min(255, value / 191.0F * 255);
-                    return new Color(value, value, blue);
-                }
-            }
-            set { _color = value; }
         }
         public Vector2f BottomLeft { get { return new Vector2f(Bounds.Left, Bounds.Top + Bounds.Height); } }
         public Vector2f BottomRight { get { return new Vector2f(Bounds.Left + Bounds.Width, Bounds.Top + Bounds.Height); } }
@@ -73,11 +54,11 @@ namespace HHGame.Entities
         {
             Game = _game;
         }
-        protected virtual void OnEnqueue(GameWindow window, GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
-        protected virtual void OnDequeue(GameWindow window, GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
-        protected virtual void OnUpdate(GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
-        protected virtual void OnDraw(GameWindow window, GameWindow.Priority priority) { }
-        public void OnQueue(GameWindow window, GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue)
+        protected virtual void OnEnqueue(GameWindow window, Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
+        protected virtual void OnDequeue(GameWindow window, Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
+        protected virtual void OnUpdate(Priority priority, ConcurrentQueue<QueuedEntity> queue) { }
+        protected virtual void OnDraw(GameWindow window, Priority priority) { }
+        public void OnQueue(GameWindow window, Priority priority, ConcurrentQueue<QueuedEntity> queue)
         {
             
             if (IsAlive)
@@ -98,11 +79,12 @@ namespace HHGame.Entities
         }
         public RectangleShape GetHitbox()
         {
-            _rect.Origin = new Vector2f(Bounds.Width / 2, Bounds.Height / 2);
-            _rect.Size = new Vector2f(Bounds.Width, Bounds.Height);
-            _rect.FillColor = new Color(0, 255, 0, 128);
-            _rect.Position = Position; _rect.Rotation = Rotation;
-            return _rect;
+            RectangleShape rect = new RectangleShape();
+            rect.Origin = new Vector2f(Bounds.Width / 2, Bounds.Height / 2);
+            rect.Size = new Vector2f(Bounds.Width, Bounds.Height);
+            rect.FillColor = new Color(0, 255, 0, 128);
+            rect.Position = Position; rect.Rotation = Rotation;
+            return rect;
         }
         public void Move(float x, float y)
         {

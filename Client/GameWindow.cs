@@ -13,7 +13,6 @@ namespace HHGame.Client
 {
     public class GameWindow : RenderWindow
     {
-        public enum Priority { Background, Mainground, Foreground }
         public static readonly FloatRect FOV = new FloatRect(0, 0, 256, 256);
         public static readonly Vector2f Center = new Vector2f(128, 128);
         private Dictionary<Priority, Queue<QueuedEntity>> Queue = new Dictionary<Priority, Queue<QueuedEntity>>();
@@ -21,7 +20,7 @@ namespace HHGame.Client
         private ConcurrentQueue<QueuedEntity> MaingroundItems = new ConcurrentQueue<QueuedEntity>();
         private ConcurrentQueue<QueuedEntity> ForegroundItems = new ConcurrentQueue<QueuedEntity>();
         private ConcurrentQueue<QueuedEntity> ConcurrentQueue = new ConcurrentQueue<QueuedEntity>();
-        private Clock FrameClock = new Clock();
+        private Clock _frameClock = new Clock();
         public bool ShowHitboxes = false;
         public Game Game;
         public GameWindow(Game game) : base(game.Options.FullscreenEnabled? VideoMode.FullscreenModes[0] : new VideoMode(game.Options.Width, game.Options.Height), Game.Title, game.Options.FullscreenEnabled? Styles.Fullscreen : Styles.Default)
@@ -29,14 +28,10 @@ namespace HHGame.Client
             Game = game;
             SetVerticalSyncEnabled(true);
             SetIcon(192, 192, Game.Assets.GrabImage("Icon").CopyToImage().Pixels);
+            SetView(AdjustView());
             Queue.Add(Priority.Background, new Queue<QueuedEntity>());
             Queue.Add(Priority.Mainground, new Queue<QueuedEntity>());
             Queue.Add(Priority.Foreground, new Queue<QueuedEntity>());
-            Watch(Priority.Background, Game.Stage);
-            Watch(Priority.Mainground, Game.Stage);
-            Watch(Priority.Foreground, Game.Stage);
-            Watch(Priority.Foreground, Game.Stage.Lights);
-            SetView(AdjustView());
             Closed += OnClosed;
             GainedFocus += OnGainedFocus;
             JoystickButtonPressed += OnJoystickButtonPressed;
@@ -63,8 +58,10 @@ namespace HHGame.Client
         public void RunOnce()
         {
             QueuedEntity _item;
+            Joystick.Update();
             DispatchEvents();
             Clear(Color.Black);
+            Game.Mode.BeginQueue(this);
             while (BackgroundItems.TryDequeue(out _item))
             {
                 _item.OnQueue(this, Priority.Background, ConcurrentQueue);
@@ -80,6 +77,7 @@ namespace HHGame.Client
                 _item.OnQueue(this, Priority.Foreground, ConcurrentQueue);
             }
             Swap(ForegroundItems, _item);
+            Game.Mode.AfterQueue(this);
             Display();
         }
         private void Swap(ConcurrentQueue<QueuedEntity> queue, QueuedEntity _item)
@@ -106,10 +104,10 @@ namespace HHGame.Client
         }
         public override void Display()
         {
-            float _fps = 1.0F / FrameClock.ElapsedTime.AsSeconds();
+            float _fps = 1.0F / _frameClock.ElapsedTime.AsSeconds();
             SetTitle(string.Format("{0} [FPS: {1}]", Game.Title, _fps));
             Game.FrameDelta = 60.0F / _fps;
-            FrameClock.Restart();
+            _frameClock.Restart();
             base.Display();
         }
         public void DrawText(Text text, bool centered = false)
@@ -120,35 +118,36 @@ namespace HHGame.Client
         }
         private void OnClosed(object sender, EventArgs e)
         {
+            Game.Mode.OnClosed(sender, e);
             Close();
         }
         private void OnGainedFocus(object sender, EventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnGainedFocus(sender, e);
         }
         private void OnJoystickButtonPressed(object sender, JoystickButtonEventArgs e)
         {
-            Console.WriteLine("{0} PRESSED {1}", e.JoystickId, e.Button);
+            Game.Mode.OnJoystickButtonPressed(sender, e);
         }
         private void OnJoystickButtonReleased(object sender, JoystickButtonEventArgs e)
         {
-            Console.WriteLine("{0} RELEASED {1}", e.JoystickId, e.Button);
+            Game.Mode.OnJoystickButtonReleased(sender, e);
         }
         private void OnJoystickConnected(object sender, JoystickConnectEventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnJoystickConnected(sender, e);
         }
         private void OnJoystickDisconnected(object sender, JoystickConnectEventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnJoystickDisconnected(sender, e);
         }
         private void OnJoystickMoved(object sender, JoystickMoveEventArgs e)
         {
-            Console.WriteLine("{0} MOVED {1} to {2}", e.JoystickId, e.Axis, e.Position);
+            Game.Mode.OnJoystickMoved(sender, e);
         }
         private void OnKeyPressed(object sender, KeyEventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnKeyPressed(sender, e);
         }
         private void OnKeyReleased(object sender, KeyEventArgs e)
         {
@@ -161,45 +160,47 @@ namespace HHGame.Client
                     Game.Options.FullscreenEnabled = !Game.Options.FullscreenEnabled;
                     Game.OpenWindow();
                     break;
+                default:
+                    Game.Mode.OnKeyReleased(sender, e);
+                    break;
             }
         }
         private void OnLostFocus(object sender, EventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnLostFocus(sender, e);
         }
         private void OnMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            
+            Game.Mode.OnMouseButtonPressed(sender, e);
         }
         private void OnMouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            SkeletonEntity entity = new SkeletonEntity(Game.Assets.GrabImage("Characters.Jordan.Winter"), Game, 17);
-            entity.Position = MapPixelToCoords(new Vector2i(e.X, e.Y));
-            Watch(Priority.Mainground, entity);
+            Game.Mode.OnMouseButtonReleased(sender, e);
         }
         private void OnMouseEntered(object sender, EventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnMouseEntered(sender, e);
         }
         private void OnMouseLeft(object sender, EventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnMouseLeft(sender, e);
         }
         private void OnMouseMoved(object sender, MouseMoveEventArgs e)
         {
-            
+            Game.Mode.OnMouseMoved(sender, e);
         }
         private void OnMouseWheelScrolled(object sender, MouseWheelScrollEventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnMouseWheelScrolled(sender, e);
         }
         private void OnResized(object sender, SizeEventArgs e)
         {
+            Game.Mode.OnResized(sender, e);
             SetView(AdjustView());
         }
         private void OnTextEntered(object sender, TextEventArgs e)
         {
-            // throw new NotImplementedException();
+            Game.Mode.OnTextEntered(sender, e);
         }
     }
 }

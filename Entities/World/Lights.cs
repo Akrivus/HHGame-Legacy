@@ -16,7 +16,7 @@ namespace HHGame.Entities.World
             IgnoresAmbientLight = true;
             AlwaysVisible = true;
         }
-        protected override void OnDraw(GameWindow window, GameWindow.Priority priority)
+        protected override void OnDraw(GameWindow window, Priority priority)
         {
             if (!Flickering || Game.RNG.Next(20) > 2)
             {

@@ -10,13 +10,12 @@ namespace HHGame.Entities
 {
     public class SkeletonEntity : PhysicalEntity
     {
-        public int FullHeight { get { return TorsoHeight * 2 + HeadHeight; } }
-        public float HeightOffset { get { return -0.5F * TorsoHeight + 6.5F; } }
-        public int CeliacPoint { get { return TorsoHeight / 2 + 1; } }
         public const int HeadHeight = 13;
         public int TorsoHeight;
         public Vector2f Facing;
-        public bool Walking = true;
+        public bool Walking;
+        public PhysicalEntity RightHeldItem;
+        public PhysicalEntity LeftHeldItem;
         protected float RightArmRotation;
         protected float LeftArmRotation;
         protected float HeadRotation;
@@ -29,12 +28,15 @@ namespace HHGame.Entities
         protected Sprite LeftLeg;
         protected Sprite LeftArm;
         private bool LeftLeading;
+        public int FullHeight { get { return TorsoHeight * 2 + HeadHeight; } }
+        public float HeightOffset { get { return -0.5F * TorsoHeight + 6.5F; } }
+        public int CeliacPoint { get { return TorsoHeight / 2 + 1; } }
         public SkeletonEntity(Texture texture, Game _game, int torsoHeight) : base(_game)
         {
             TorsoHeight = torsoHeight;
             Bounds = new FloatRect(0, 0, 16, FullHeight);
             RightArm = new Sprite(texture, new IntRect(11, HeadHeight + 1, 4, TorsoHeight));
-            RightArm.Origin = new Vector2f(-1, 0);
+            RightArm.Origin = new Vector2f(1, 0);
             RightLeg = new Sprite(texture, new IntRect(8, HeadHeight + TorsoHeight + 1, 5, TorsoHeight));
             RightLeg.Origin = new Vector2f(1, 0);
             Head = new Sprite(texture, new IntRect(0, 0, 16, HeadHeight));
@@ -47,7 +49,7 @@ namespace HHGame.Entities
             LeftArm.Origin = new Vector2f(4, 0);
             CanBounce = true;
         }
-        protected override void OnUpdate(GameWindow.Priority priority, ConcurrentQueue<QueuedEntity> queue)
+        protected override void OnUpdate(Priority priority, ConcurrentQueue<QueuedEntity> queue)
         {
             base.OnUpdate(priority, queue);
             if (Walking)
@@ -94,9 +96,9 @@ namespace HHGame.Entities
                 }
             }
         }
-        protected override void OnDraw(GameWindow window, GameWindow.Priority priority)
+        protected override void OnDraw(GameWindow window, Priority priority)
         {
-            RightArm.Position = new Vector2f(Position.X + 2, Position.Y - CeliacPoint + HeightOffset + 2);
+            RightArm.Position = new Vector2f(Position.X + 4, Position.Y - CeliacPoint + HeightOffset + 2);
             RightArm.Rotation = RightArmRotation;
             RightLeg.Position = new Vector2f(Position.X + 1, Position.Y + CeliacPoint + HeightOffset);
             RightLeg.Rotation = RightLegRotation;
@@ -120,7 +122,7 @@ namespace HHGame.Entities
                 Head.Position = new Vector2f(Position.X, Position.Y - CeliacPoint + HeightOffset + 1);
             }
             Torso.Position = new Vector2f(Position.X, Position.Y + 1 + HeightOffset);
-            LeftLeg.Position = new Vector2f(Position.X - 3, Position.Y + CeliacPoint + HeightOffset);
+            LeftLeg.Position = new Vector2f(Position.X - 2, Position.Y + CeliacPoint + HeightOffset);
             LeftLeg.Rotation = LeftLegRotation;
             if (LeftLeg.Rotation != 0)
             {
@@ -135,11 +137,13 @@ namespace HHGame.Entities
             if (GetScaleFromFace() > 0)
             {
                 window.Draw(RightArm);
+                OnDrawRightHand(window, priority);
                 window.Draw(RightLeg);
             }
             else
             {
                 window.Draw(LeftLeg);
+                OnDrawLeftHand(window, priority);
                 window.Draw(LeftArm);
             }
             window.Draw(Head);
@@ -147,13 +151,39 @@ namespace HHGame.Entities
             if (GetScaleFromFace() > 0)
             {
                 window.Draw(LeftArm);
+                OnDrawLeftHand(window, priority);
                 window.Draw(LeftLeg);
             }
             else
             {
                 window.Draw(RightLeg);
+                OnDrawRightHand(window, priority);
                 window.Draw(RightArm);
             }
+        }
+        protected virtual void OnDrawRightHand(GameWindow window, Priority priority)
+        {
+            if (RightHeldItem != null)
+            {
+                RightHeldItem.Position = PostRenderPosition(RightArm, TorsoHeight);
+                RightHeldItem.Rotation = RightArmRotation;
+                RightHeldItem.OnQueue(window, priority, new ConcurrentQueue<QueuedEntity>());
+            }
+        }
+        protected virtual void OnDrawLeftHand(GameWindow window, Priority priority)
+        {
+            if (LeftHeldItem != null)
+            {
+                LeftHeldItem.Position = PostRenderPosition(LeftArm, TorsoHeight);
+                LeftHeldItem.Rotation = LeftArmRotation;
+                LeftHeldItem.OnQueue(window, priority, new ConcurrentQueue<QueuedEntity>());
+            }
+        }
+        protected Vector2f PostRenderPosition(Sprite sprite, float width)
+        {
+            float x = (float) Math.Sin(Math.PI / 180 * sprite.Rotation) * width;
+            float y = (float) Math.Cos(Math.PI / 180 * sprite.Rotation) * width;
+            return new Vector2f(sprite.Position.X - x, sprite.Position.Y + y);
         }
         protected virtual float GetWalkingSpeed()
         {

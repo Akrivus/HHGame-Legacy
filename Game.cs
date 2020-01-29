@@ -1,6 +1,8 @@
 ﻿using HHGame.Client;
+using HHGame.Client.Modes;
 using HHGame.Data;
 using HHGame.Entities;
+using HHGame.Entities.Player;
 using HHGame.Entities.World;
 using SFML.Graphics;
 using SFML.System;
@@ -15,54 +17,71 @@ namespace HHGame
 {
     public class Game
     {
-        public enum Seasons { Winter, Spring, Summer, Autumn }
-        private GameWindow _window;
-        public Clock Clock = new Clock();
-        public Random RNG = new Random();
+        public const string Title = "HHGame: The Game";
+        public const float LevelLength = 240;
+        public const float Gravity = 1.0F;
+        public const float Friction = 0.9F;
+        public static Random RNG = new Random();
+        public static Game Instance;
         public float FrameDelta;
-        public Stage Stage;
         public Options Options;
         public Assets Assets;
+        private Clock _clock = new Clock();
+        private GameWindow _window;
+        private Mode _mode;
         public GameWindow Window {
+            get { return _window; }
             set {
                 if (_window != null)
                 {
                     _window.Close();
                 }
                 _window = value;
+                _mode.Load(_window);
             }
-            get { return _window; }
+        }
+        public Mode Mode
+        {
+            get { return _mode; }
+            set
+            {
+                if (_mode != null)
+                {
+                    _mode.Exit(_window);
+                }
+                _mode = value;
+            }
         }
         public float Time {
-            get { return Clock.ElapsedTime.AsSeconds(); }
+            get { return _clock.ElapsedTime.AsSeconds(); }
         }
-        public Seasons Season
+        public Season Season
         {
             get
             {
                 switch (DateTime.Now.Month)
                 {
-                    case 11:    // December
-                    case 0:     // January
-                    case 1:     // February
-                        return Seasons.Winter;
-                    case 2:     // March
-                    case 3:     // April
-                    case 4:     // May
-                        return Seasons.Spring;
-                    case 5:     // June
-                    case 6:     // July
-                    case 7:     // August
-                        return Seasons.Summer;
+                    case 12:    // December
+                    case 1:     // January
+                    case 2:     // February
+                        return Season.Winter;
+                    case 3:     // March
+                    case 4:     // April
+                    case 5:     // May
+                        return Season.Spring;
+                    case 6:     // June
+                    case 7:     // July
+                    case 8:     // August
+                        return Season.Summer;
                     default:
-                        return Seasons.Autumn;
+                        return Season.Autumn;
                 }
             }
         }
         public Game(Options _options, Assets _assets)
         {
             Options = _options; Assets = _assets;
-            Stage = new Stage(this);
+            Mode = new GameMode(this, Character.Isaiah);
             OpenWindow();
         }
         public void OpenWindow()
@@ -75,22 +94,12 @@ namespace HHGame
         }
         public bool CanSee(QueuedEntity entity)
         {
-            return entity.AlwaysVisible || GameWindow.FOV.Contains(entity.Position.X, entity.Position.Y);
+            return GameWindow.FOV.Contains(entity.Position.X, entity.Position.Y) || entity.AlwaysVisible;
         }
         public bool CanFall(Vector2f position)
         {
-            if (position.Y > 172 && position.X > 170)
-            {
-                return position.Y < 172;
-            }
             return position.Y < 192;
         }
-        public const string Title = "HHGame: The Game";
-        public const float LevelLength = 24;
-        public const float Gravity = 1.0F;
-        public const float Friction = 0.9F;
-        public static readonly FloatRect EmptyHitbox = new FloatRect(0, 0, 0, 0);
-        public static Game Instance;
         public static void Main(string[] args)
         {
             Instance = new Game(Options.Load(), new Assets());

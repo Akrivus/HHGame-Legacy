@@ -16,9 +16,9 @@ namespace HHGame.Entities.Items
             Bounds = new FloatRect(0, 0, 8, 8);
             CanBounce = true; CanRoll = true;
         }
-        protected override void OnDraw(GameWindow window, GameWindow.Priority priority)
+        protected override void OnDraw(GameWindow window, Priority priority)
         {
-            Sprite.Color = Game.Stage.Color;
+            Sprite.Origin = new Vector2f(4, 4);
             Sprite.Position = Position;
             Sprite.Rotation = Rotation;
             window.Draw(Sprite);
