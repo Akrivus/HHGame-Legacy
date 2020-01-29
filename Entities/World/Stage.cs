@@ -32,7 +32,7 @@ namespace HHGame.Entities.World
                     window.Draw(Background);
                     break;
                 case Priority.Mainground:
-                    //window.Draw(Mainground);
+                    window.Draw(Mainground);
                     window.Draw(Television);
                     break;
                 case Priority.Foreground:
